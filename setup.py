@@ -35,6 +35,9 @@ class VerifyVersionCommand(install):
 
 install_requires = [
     "tentaclio",
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
 ]
 
 

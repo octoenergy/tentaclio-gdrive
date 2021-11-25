@@ -85,15 +85,6 @@ jobs:
           name: Run Python unit tests
           command: make unit
 
-  functional:
-    executor: standard
-    steps:
-      - checkout_source
-      - update_virtualenv
-      - run:
-          name: Run gdrive functional tests
-          command: make functional
-
   release:
     executor: standard
     steps:
@@ -133,15 +124,10 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - functional:
-          filters:
-            tags:
-              only: /.*/
       - release:
           requires:
             - lint
             - unit
-            - functional
           filters:
             tags:
               only: /[0-9]+(\.[0-9]+)*(-alpha\.[0-9]+)?/
