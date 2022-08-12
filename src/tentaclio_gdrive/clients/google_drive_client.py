@@ -244,7 +244,7 @@ class GoogleDriveFSClient(base_client.BaseClient["GoogleDriveFSClient"]):
         leaf_descriptor = self._get_leaf_descriptor()
         args = {
             "fileId": leaf_descriptor.id_,
-            "supportsTeamDrives": True,
+            "supportsAllDrives": True,
         }
         self._service.files().delete(**args).execute()  # type: ignore
 
@@ -311,7 +311,7 @@ class _DownloadRequest(_GoogleDriveRequest):
     def __init__(self, service: Any, file_id: str, writer: protocols.ByteWriter, **kwargs):
         super().__init__(service, kwargs)
         self.args["fileId"] = file_id
-        self.args["supportsTeamDrives"] = True
+        self.args["supportsAllDrives"] = True
         self.writer = writer
 
     def execute(self):
@@ -329,8 +329,6 @@ class _CreateRequest(_GoogleDriveRequest):
         self, service: Any, name: str, parent_id: str, reader: protocols.ByteReader, **kwargs
     ):
         super().__init__(service, kwargs)
-        # self.args["parents"] = [parent_id]
-        self.args["supportsTeamDrives"] = True
         self.args["name"] = name
         self.args["parents"] = [parent_id]
         self.reader = reader
@@ -342,6 +340,7 @@ class _CreateRequest(_GoogleDriveRequest):
         self.service.files().create(
             body=self.args,
             media_body=media_body,
+            supportsAllDrives=True,
         ).execute()
 
 
@@ -353,7 +352,7 @@ class _UpdateRequest(_GoogleDriveRequest):
     ):
         super().__init__(service, kwargs)
         # self.args["parents"] = [parent_id]
-        self.args["supportsTeamDrives"] = True
+        self.args["supportsAllDrives"] = True
         self.args["fileId"] = file_id
         self.name = name
         self.reader = reader
@@ -397,7 +396,7 @@ class _ListFilesRequest(_Lister[_GoogleFileDescriptor]):
     def __init__(self, service: Any, url_base: Optional[str] = None, **kwargs):
         super().__init__(service, **kwargs)
         # Get team drives too
-        self.args["supportsTeamDrives"] = True
+        self.args["supportsAllDrives"] = True
         self.args["includeTeamDriveItems"] = True
         self.args["fields"] = "files(id, name, mimeType, parents)"
         self.url_base = url_base
