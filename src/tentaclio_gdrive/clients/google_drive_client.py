@@ -125,6 +125,7 @@ class GoogleDriveFSClient(base_client.BaseClient["GoogleDriveFSClient"]):
 
     DEFAULT_DRIVE_NAME = "My Drive"
     DEFAULT_DRIVE_ID = "root"
+    DEFAULT_SHARED_DRIVE_NAME = "Shared with me"
     DEFAULT_DRIVE_DESCRIPTOR = _GoogleDriveDescriptor(
         id_=DEFAULT_DRIVE_ID,
         name=DEFAULT_DRIVE_NAME,
@@ -164,7 +165,7 @@ class GoogleDriveFSClient(base_client.BaseClient["GoogleDriveFSClient"]):
         drives = self._get_drives()
         if self.drive_name not in drives:
             names = [d for d in drives]
-            raise ValueError(f"Drive name (hostname) should be one of {names}")
+            raise ValueError(f"Drive name {self.drive_name} should be one of {names}")
         return drives[self.drive_name]
 
     def _connect(self) -> "GoogleDriveFSClient":
@@ -262,6 +263,8 @@ class GoogleDriveFSClient(base_client.BaseClient["GoogleDriveFSClient"]):
         parts = self.path_parts
         if ignore_tail:
             parts = parts[:-1]
+        if self.drive_name == self.DEFAULT_SHARED_DRIVE_NAME:
+            return [self._get_file_descriptor_by_name(parts[0])]
         return list(self._path_parts_to_descriptors(self._drive, parts))
 
     def _path_parts_to_descriptors(
