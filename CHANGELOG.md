@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.4] - 2024-03-6
+### Fixed
+- Fix reading from shared drives
+
 ## [0.0.3] - 2022-08-12
 ### Fixed
 - Fix writing to shared drives by using the appropriate non-deprecated API parameter
