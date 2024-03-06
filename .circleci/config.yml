@@ -9,10 +9,9 @@ version: 2.1
 executors:
   standard:
     docker:
-      - image: circleci/python:3.9
+      - image: cimg/python:3.10
         environment:
           PIPENV_VENV_IN_PROJECT: true
-    working_directory: "~/lib"
 
 # -----------------
 # Reusable commands
@@ -41,14 +40,6 @@ commands:
           paths:
             - "./.git"
 
-# todo: remove unixodbc when tentaclio 1.0 is released
-  install_unixodbc:
-    steps:
-      - run:
-          name: Instal UnixODBC
-          command: |
-            sudo apt-get install unixodbc-dev -y
-
   update_virtualenv:
     steps:
       - restore_cache:
@@ -57,7 +48,6 @@ commands:
             - pip-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
             - pip-cache-{{ .Environment.CACHE_VERSION }}-
       - configure_github
-      - install_unixodbc
       - run:
           name: Install Python packages
           command: make sync
