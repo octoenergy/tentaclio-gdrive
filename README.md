@@ -28,7 +28,7 @@ Google drive support is _experimental_ and should be used at your own risk. Also
 First we need a credentials file in order to be able to generate tokens. The easiest way to do this is by going to [this example](https://developers.google.com/drive/api/v3/quickstart/python),
 click on enable drive api. Give the project a name of your choosing (eg `tentaclio`). Click on `APIs and services` -> `Credentials` -> `Create credentials` -> Create OAuth client ID`, select `Desktop app` and `Download JSON`
 
-2. Generate token file
+2. Generate token file (change the name of the credentials.json in the command to be the same of the downloaded json)
 
 ```
 pipenv install tentaclio && \
